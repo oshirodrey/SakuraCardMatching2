@@ -1,0 +1,4 @@
+repository "SakuraCardcaptor/SakuraCardcaptor@18968330089708@cloud"
+  path "/"
+    br "/main"
+    co "/main"
