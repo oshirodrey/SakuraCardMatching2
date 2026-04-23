@@ -1,43 +1,54 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class MainMenuController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
+    [SerializeField] private AudioClip buttonClickSound;
+
+   // [SerializeField] private AudioClip buttonHoverSound;
+    [SerializeField] private AudioClip backgroundMusic;
+
+    [SerializeField] private GameObject choosingPlayModePanel;
+    
     void Start()
     {
-        
+        SoundManager.Instance.PlayMusic(backgroundMusic);
     }
 
-    // Update is called once per frame
-    void Update()
+    void PlayButtonClickSound()
     {
-        
+        SoundManager.Instance.PlaySFX(buttonClickSound);
+    
     }
 
-    public void openModeSelectScene(){
-        UnityEngine.SceneManagement.SceneManager.LoadScene("ModeChoosing(sing-mul)");
-        
+    public void loadSceneByName(string sceneName){
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        PlayButtonClickSound();
+        SoundManager.Instance.StopMusic();
     }
-    public void openSettingsScene(){
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Settings");
+
+    public void showChoosingPlayModePanel(){
+        choosingPlayModePanel.SetActive(true);
+        PlayButtonClickSound();
     }
-    public void openRulesScene(){
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Rules");
+
+    public void hideChoosingPlayModePanel(){
+        choosingPlayModePanel.SetActive(false);
+        PlayButtonClickSound();
     }
-    public void openHighScoreScene(){
-        UnityEngine.SceneManagement.SceneManager.LoadScene("HighScores");
-    }
+ 
     public void exitGame(){
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
         Application.Quit();
+        #endif
     }
 
-    public void openMainMenuScene(){
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-    }
 
-    public void openSinglePlayerScene(){
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Singleplayer");
-    }
+    
 
 }
