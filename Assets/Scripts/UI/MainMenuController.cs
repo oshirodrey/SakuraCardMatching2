@@ -20,7 +20,7 @@ public class MainMenuController : MonoBehaviour
 
     void PlayButtonClickSound()
     {
-        SoundManager.Instance.PlaySFX(buttonClickSound);
+        SoundManager.Instance.PlaySfx(buttonClickSound);
     
     }
 

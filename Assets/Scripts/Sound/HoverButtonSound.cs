@@ -12,7 +12,7 @@ public class HoverButtonSound : MonoBehaviour, IPointerEnterHandler
         // Check if we have a sound and if our SoundManager exists
         if (hoverSound != null && SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySFX(hoverSound);
+            SoundManager.Instance.PlaySfx(hoverSound);
         }
     }
 }

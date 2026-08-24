@@ -1,12 +1,20 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SoundManager : MonoBehaviour
 {
     // The static instance that any script can access
     public static SoundManager Instance { get; private set; }
 
-    [SerializeField] private AudioSource MusicSource;
+    [FormerlySerializedAs("MusicSource")]
+    [Header("Audio Sources")]
+    [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource SFXSource;
+    
+    [Header("Volume Settings")]
+    [Range(0f, 1f)] private float _masterVolume = 1f;
+    [Range(0f, 1f)] private float _musicVolume = 0.5f;
+    [Range(0f, 1f)] private float _sfxVolume = 0.5f;
 
     private void Awake()
     {
@@ -23,14 +31,14 @@ public class SoundManager : MonoBehaviour
     }
 
     // Now any script can call this by passing in an AudioClip
-    public void PlaySFX(AudioClip clip)
+    public void PlaySfx(AudioClip clip)
     {
         if (clip != null && SFXSource != null)
         {
             SFXSource.PlayOneShot(clip);
         }
     }
-    public void StopSFX()
+    public void StopSfx()
     {
         if (SFXSource != null)
         {
@@ -40,20 +48,67 @@ public class SoundManager : MonoBehaviour
 
     public void PlayMusic(AudioClip clip)
     {
-        if (clip != null && MusicSource != null)
+        if (clip != null && musicSource != null)
         {
-            MusicSource.clip = clip;
-            MusicSource.Play();
+            musicSource.clip = clip;
+            musicSource.Play();
         }
     }
 
     public void StopMusic()
     {
-        if (MusicSource != null)
+        if (musicSource != null)
         {
-            MusicSource.Stop();
+            musicSource.Stop();
         }
     }
 
     
+    private void UpdateAudioSources()
+    {
+        // The final volume is the individual volume multiplied by the master volume
+        musicSource.volume = _musicVolume * _masterVolume;
+        SFXSource.volume = _sfxVolume * _masterVolume;
+    }
+
+    public void AdjustMasterVolume(float value)
+    {
+        _masterVolume= value;
+        UpdateAudioSources();
+    }
+
+    public void AdjustMusicVolume(float value)
+    {
+        if (musicSource != null)
+        {
+            _musicVolume = value;
+            UpdateAudioSources();
+        }
+        
+    }
+
+    public void AdjustSfxVolume(float value)
+    {
+        if (SFXSource != null)
+        {
+            _sfxVolume = value;
+            UpdateAudioSources();
+        }
+    }
+    
+    
+    public float GetMasterVolume()
+    {
+        return _masterVolume;
+    }
+
+    public float GetMusicVolume()
+    {
+        return _musicVolume;
+    }
+
+    public float GetSFXVolume()
+    {
+        return _sfxVolume;
+    }
 }
